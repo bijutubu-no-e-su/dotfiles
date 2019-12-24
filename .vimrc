@@ -23,7 +23,8 @@ set smartcase
 set hlsearch
 
 nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
-
+"regex setting
+nnoremap / /\v
 "cursor setting
 "set cursorcolumn
 set whichwrap=b,s,h,l,<,>,[,],~
@@ -61,6 +62,7 @@ endif
 set noswapfile
 
 "paste setting
+set clipboard+=unnamed
 if &term =~ "xterm"
     let &t_SI .= "\e[?2004h"
     let &t_EI .= "\e[?2004l"
@@ -99,6 +101,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'cocopon/iceberg.vim'
 Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/neomru.vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Shougo/vimshell.vim'
 Plugin 'yonchu/accelerated-smooth-scroll'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'othree/yajs.vim'
@@ -108,6 +112,7 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'simeji/winresizer'
 Plugin 'Shougo/neocomplete.vim'
 
 
@@ -143,7 +148,7 @@ let g:closetag_filenames = '*.html,*.phtml,*.erb,*.php,*.vue,*.jsx,*.js,*.xml'
 "setting for unite.vim
 """ unite.vim
 " 入力モードで開始する
-let g:unite_enable_start_insert=1
+" let g:unite_enable_start_insert=0
 " インサート／ノーマルどちらからでも呼び出せるようにキーマップ
 nnoremap <silent> <C-f> :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 inoremap <silent> <C-f> <ESC>:<C-u>UniteWithBufferDir -buffer-name=files file<CR>
@@ -202,9 +207,9 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
   " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
+  return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -227,7 +232,7 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType python setlocal omnifunc=python3complete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Enable heavy omni completion.
@@ -266,6 +271,13 @@ augroup ctags
 augroup END
 
 nnoremap <C-]> g<C-]>
+
+"setting for winresizer
+" If you want to start window resize mode by `Ctrl+A`
+let g:winresizer_start_key = "<C-T>"
+
+" If you cancel and quit window resize mode by `z` (keycode 122)
+let g:winresizer_keycode_cancel = 122
 
 "color setting
 :colorscheme iceberg
