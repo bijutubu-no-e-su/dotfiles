@@ -87,6 +87,11 @@ set showcmd
 set showmode
 set noundofile
 
+"auto open QuickFix when vimgrep
+augroup grepopen
+    autocmd!
+    autocmd QuickFixCmdPost vimgrep cw
+augroup END
 
 "Vundle setting
 filetype off        "required
@@ -114,7 +119,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'simeji/winresizer'
 Plugin 'Shougo/neocomplete.vim'
-
+Plugin 'https://github.com/twitvim/twitvim.git'
 
 "setting for vim-indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
@@ -279,6 +284,12 @@ let g:winresizer_start_key = "<C-T>"
 " If you cancel and quit window resize mode by `z` (keycode 122)
 let g:winresizer_keycode_cancel = 122
 
+"twitvim setting
+autocmd FileType twitvim call s:twitvim_my_setting()
+function! s:twitvim_my_setting()
+    set nowrap
+    set whichwrap=b,s,h,l,<,>,[,]
+endfunction
 "color setting
 :colorscheme iceberg
 set laststatus=2
