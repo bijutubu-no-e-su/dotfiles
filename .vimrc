@@ -68,7 +68,7 @@ if &term =~ "xterm"
     let &t_EI .= "\e[?2004l"
     let &pastetoggle = "\e[201~"
 
-    function XTermPasteBegin(ret)
+    function! XTermPasteBegin(ret)
         set paste
         return a:ret
     endfunction
@@ -120,6 +120,8 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'simeji/winresizer'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'https://github.com/twitvim/twitvim.git'
+Plugin 'dense-analysis/ale'
+Plugin 'mattn/emmet-vim'
 
 "setting for vim-indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
@@ -290,6 +292,47 @@ function! s:twitvim_my_setting()
     set nowrap
     set whichwrap=b,s,h,l,<,>,[,]
 endfunction
+
+"setting for ale
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
+
+let g:ale_sign_column_always = 1
+
+let g:ale_sign_error = '!!'
+let g:ale_sign_warning = '=='
+
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+
+" ファイルオープン時にチェックしたくない場合
+let g:ale_lint_on_enter = 0
+
+let g:ale_set_loclist =0
+let g:ale_set_quickfix =1
+
+let g:ale_open_list = 1
+
+" エラーと警告がなくなっても開いたままにする
+let g:ale_keep_list_window_open = 1
+" fixについての設定
+let g:ale_fixers = {
+\  '*': ['remove_trailing_lines', 'trim_whitespace'],
+\  'javascript': ['eslint'],
+\}
+let g:ale_fix_on_save = 1
+"let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+let g:ale_javascript_prettier_use_local_config = 1
+
+
 "color setting
 :colorscheme iceberg
 set laststatus=2
