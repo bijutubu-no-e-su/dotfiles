@@ -108,7 +108,7 @@ Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/neomru.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
-Plugin 'yonchu/accelerated-smooth-scroll'
+" Plugin 'yonchu/accelerated-smooth-scroll'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'othree/yajs.vim'
 Plugin 'alvan/vim-closetag'
@@ -122,32 +122,109 @@ Plugin 'Shougo/neocomplete.vim'
 Plugin 'https://github.com/twitvim/twitvim.git'
 Plugin 'dense-analysis/ale'
 Plugin 'mattn/emmet-vim'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'tpope/vim-fugitive'
 
 "setting for vim-indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
 "setting for lightline.vim
+" let g:lightline = {
+" 		\ 'colorscheme': 'iceberg',
+" 		\ 'active': {
+" 			\ 'left': [ ['mode', 'paste'], ['readonly', 'filepath' , 'modified'] ]
+" 				\ },
+" 		\ 'component_function':{
+" 			\ 'filepath': 'FilePath'
+" 				\ }
+" 		\ }
+"
+" function! FilePath()
+" 		if winwidth(0) > 90
+" 			return expand('%:p')
+" 		else
+" 			return expand('%')
+" 		endif
+" 	endfunction
 let g:lightline = {
-		\ 'colorscheme': 'iceberg',
-		\ 'active': {
-			\ 'left': [ ['mode', 'paste'], ['readonly', 'filepath' , 'modified'] ]
-				\ },
-		\ 'component_function':{
-			\ 'filepath': 'FilePath'
-				\ }
-		\ }
+        \ 'colorscheme': 'iceberg',
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ],
+        \             [ 'fugitive', 'filename' ] ]
+        \ },
+        \ 'component_function': {
+        \   'fugitive': 'LightLineFugitive',
+        \   'readonly': 'LightLineReadonly',
+        \   'modified': 'LightLineModified',
+        \   'filename': 'LightLineFilename',
+        \   'filetype': 'LightLineFiletype',
+        \   'fileformat': 'LightLineFileformat',
+        \ },
+        \ }
 
-function! FilePath()
-		if winwidth(0) > 90
-			return expand('%:p')
-		else
-			return expand('%')
-		endif
-	endfunction
+function! LightLineModified()
+    if &filetype == "help"
+        return ""
+    elseif &modified
+        return "+"
+    elseif &modifiable
+        return ""
+    else
+        return ""
+    endif
+endfunction
+
+function! LightLineReadonly()
+    if &filetype == "help"
+        return ""
+    elseif &readonly
+        return ""
+    else
+        return ""
+    endif
+endfunction
+
+function! LightLineFugitive()
+    if exists("*fugitive#head")
+        let _ = fugitive#head()
+        return strlen(_) ? ''._ : ''
+    endif
+    return ''
+endfunction
+
+function! LightLineFilename()
+    return ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+                \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
+                \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+endfunction
+
+function! LightLineFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! LightLineFileformat()
+    return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+endfunction
+
 "setting for NERDtree
 nnoremap <silent><C-E> :NERDTreeToggle<CR>
 "All of your Plugins must be added before the following line
 call vundle#end()   "required
 filetype plugin indent on   "required
+
+"setting for vim-devicons
+" guifontを設定しないと文字化けになる。terminalで行ったフォントの設定と同様
+" 公式サイトではLinuxとmacOSの設定が若干異なるが、Linuxの設定でもmacOSで問題なし
+set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 12
+set encoding=utf-8
+
+" フォルダアイコンを表示
+let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
+let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+    " after a re-source, fix syntax matching issues (concealing brackets):
+if exists('g:loaded_webdevicons')
+    call webdevicons#refresh()
+endif
+
 
 "setting for vim-close-tag
 let g:closetag_filenames = '*.html,*.phtml,*.erb,*.php,*.vue,*.jsx,*.js,*.xml'
@@ -337,4 +414,4 @@ let g:ale_javascript_prettier_use_local_config = 1
 :colorscheme iceberg
 set laststatus=2
 set noshowmode
-:syntax on
+:syntax enable
