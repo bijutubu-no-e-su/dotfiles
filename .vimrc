@@ -59,8 +59,10 @@ if has ('mouse')
     endif
 endif
 "swap setting
-set noswapfile
-
+" set noswapfile
+set swapfile
+"$HOME/.vimrc
+set directory=$HOME/.vim/swapfiles
 "paste setting
 set clipboard+=unnamed
 if &term =~ "xterm"
@@ -124,6 +126,13 @@ Plugin 'dense-analysis/ale'
 Plugin 'mattn/emmet-vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'tpope/vim-fugitive'
+
+"Plugin about vim-lisp
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'mattn/vim-lsp-settings'
 
 "setting for vim-indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
@@ -227,7 +236,7 @@ endif
 
 
 "setting for vim-close-tag
-let g:closetag_filenames = '*.html,*.phtml,*.erb,*.php,*.vue,*.jsx,*.js,*.xml'
+let g:closetag_filenames = '*.html,*.phtml,*.erb,*.php,*.vue,*.jsx,*.js,*.xml,*.scss'
 
 "setting for unite.vim
 """ unite.vim
@@ -373,6 +382,8 @@ endfunction
 "setting for ale
 let g:ale_linters = {
 \   'javascript': ['eslint'],
+\   'css': ['stylelint'],
+\  'scss': ['stylelint'],
 \}
 
 let g:ale_sign_column_always = 1
@@ -388,7 +399,7 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_text_changed = 'never'
 
 " ファイルオープン時にチェックしたくない場合
 let g:ale_lint_on_enter = 0
@@ -404,10 +415,40 @@ let g:ale_keep_list_window_open = 1
 let g:ale_fixers = {
 \  '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'javascript': ['eslint'],
+\  'css': ['stylelint'],
+\  'scss': ['stylelint'],
 \}
 let g:ale_fix_on_save = 1
+let g:ale_fix_on_text_changed = 'never'
 "let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
 let g:ale_javascript_prettier_use_local_config = 1
+
+"vim-lsp typescript setting
+let g:lsp_diagnostics_enabled = 0
+
+
+"emmet-vim setting
+let g:user_emmet_settings = {
+\  'variables' : {
+\    'lang' : "en"
+\  },
+\  'html' : {
+\    'indentation' : '  ',
+\    'snippets' : {
+\      'html:5': "<!DOCTYPE html>\n"
+\        ."<html lang=\"${lang}\">\n"
+\        ."<head>\n"
+\        ."\t<meta charset=\"${charset}\">\n"
+\        ."\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n"
+\        ."\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+\        ."\t<title></title>\n"
+\        ."</head>\n"
+\        ."<body>\n\t${child}|\n</body>\n"
+\        ."</html>",
+\    }
+\  }
+\}
+
 
 
 "color setting
