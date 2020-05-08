@@ -135,6 +135,7 @@ Plugin 'dense-analysis/ale'
 Plugin 'mattn/emmet-vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'tpope/vim-fugitive'
+Plugin 'leafgarland/typescript-vim'
 
 "Plugin about vim-lisp
 Plugin 'prabirshrestha/async.vim'
