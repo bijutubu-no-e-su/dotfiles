@@ -11,10 +11,10 @@ set ambiwidth=double
 
 "tab setting
 set expandtab
-set tabstop=4
+set tabstop=2
 set autoindent
 set smartindent
-set shiftwidth=4
+set shiftwidth=2
 
 "search setting
 set incsearch
@@ -88,6 +88,15 @@ set autoread
 set showcmd
 set showmode
 set noundofile
+
+"fold setting
+set foldmethod=indent
+" Save fold settings.
+autocmd BufWritePost * if expand('%') != '' && &buftype !~ 'nofile' | mkview | endif
+autocmd BufRead * if expand('%') != '' && &buftype !~ 'nofile' | silent loadview | endif
+" Don't save options.
+set viewoptions-=options
+
 
 "auto open QuickFix when vimgrep
 augroup grepopen
@@ -236,7 +245,7 @@ endif
 
 
 "setting for vim-close-tag
-let g:closetag_filenames = '*.html,*.phtml,*.erb,*.php,*.vue,*.jsx,*.js,*.xml,*.scss'
+let g:closetag_filenames = '*.html,*.phtml,*.erb,*.php,*.vue,*.jsx,*.js,*.xml,*.scss, *.ts, *.tsx'
 
 "setting for unite.vim
 """ unite.vim
@@ -381,6 +390,7 @@ endfunction
 
 "setting for ale
 let g:ale_linters = {
+\   'typescript': ['eslint'],
 \   'javascript': ['eslint'],
 \   'css': ['stylelint'],
 \  'scss': ['stylelint'],
@@ -400,6 +410,7 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 'never'
 
 " ファイルオープン時にチェックしたくない場合
 let g:ale_lint_on_enter = 0
@@ -414,9 +425,11 @@ let g:ale_keep_list_window_open = 1
 " fixについての設定
 let g:ale_fixers = {
 \  '*': ['remove_trailing_lines', 'trim_whitespace'],
+\  'typescript': ['eslint'],
 \  'javascript': ['eslint'],
 \  'css': ['stylelint'],
 \  'scss': ['stylelint'],
+\  'html': ['prettier'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_fix_on_text_changed = 'never'
